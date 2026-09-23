@@ -11,6 +11,7 @@
         match ($variant) {
             'secondary' => 'border border-raiz-300 bg-white text-raiz-800 hover:bg-raiz-50 focus-visible:ring-raiz-500',
             'ghost' => 'text-raiz-700 hover:bg-raiz-100 focus-visible:ring-raiz-500',
+            'danger' => 'bg-red-600 text-white shadow-sm hover:bg-red-700 focus-visible:ring-red-500',
             default => 'bg-raiz-700 text-white shadow-sm hover:bg-raiz-800 focus-visible:ring-raiz-600',
         },
     ];

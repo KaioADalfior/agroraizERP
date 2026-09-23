@@ -3,10 +3,10 @@
 
     // Módulos previstos (espelham as abas da planilha "Interpretação de Análise de Solo").
     $modulos = [
-        ['icone' => 'users', 'titulo' => 'Clientes', 'texto' => 'Cadastro de clientes e proprietários, com cidade/estado, data e observações.'],
-        ['icone' => 'beaker', 'titulo' => 'Análises de solo', 'texto' => 'Lançamento dos resultados por talhão e profundidade, com cálculos automáticos.'],
-        ['icone' => 'chart-bar', 'titulo' => 'Gráficos', 'texto' => 'Interpretação visual dos nutrientes de cada amostra, pronta para apresentar.'],
-        ['icone' => 'circle-stack', 'titulo' => 'Banco de dados', 'texto' => 'Teores adequados por cultura, usados como referência na interpretação.'],
+        ['icone' => 'users', 'titulo' => 'Clientes', 'texto' => 'Cadastro de clientes e proprietários, com cidade/estado, data e observações.', 'href' => route('clientes.index')],
+        ['icone' => 'beaker', 'titulo' => 'Análises de solo', 'texto' => 'Lançamento dos resultados por talhão e profundidade, com cálculos automáticos.', 'href' => null],
+        ['icone' => 'chart-bar', 'titulo' => 'Gráficos', 'texto' => 'Interpretação visual dos nutrientes de cada amostra, pronta para apresentar.', 'href' => null],
+        ['icone' => 'circle-stack', 'titulo' => 'Banco de dados', 'texto' => 'Teores adequados por cultura, usados como referência na interpretação.', 'href' => null],
     ];
 @endphp
 
@@ -36,14 +36,25 @@
                         <span class="flex size-11 items-center justify-center rounded-xl bg-raiz-100 text-raiz-700">
                             <x-icon :name="$modulo['icone']" class="size-6" />
                         </span>
-                        <span class="inline-flex items-center gap-1 rounded-full bg-raiz-100 px-2.5 py-1 text-[11px] font-semibold uppercase tracking-wide text-raiz-600">
-                            <x-icon name="clock" class="size-3.5" />
-                            Em breve
-                        </span>
+                        @if ($modulo['href'])
+                            <span class="inline-flex items-center gap-1 rounded-full bg-raiz-700/10 px-2.5 py-1 text-[11px] font-semibold uppercase tracking-wide text-raiz-700">
+                                <x-icon name="check" class="size-3.5" />
+                                Ativo
+                            </span>
+                        @else
+                            <span class="inline-flex items-center gap-1 rounded-full bg-raiz-100 px-2.5 py-1 text-[11px] font-semibold uppercase tracking-wide text-raiz-600">
+                                <x-icon name="clock" class="size-3.5" />
+                                Em breve
+                            </span>
+                        @endif
                     </div>
 
                     <h3 class="mt-5 text-base font-semibold text-raiz-900">{{ $modulo['titulo'] }}</h3>
                     <p class="mt-2 text-sm leading-relaxed text-raiz-600">{{ $modulo['texto'] }}</p>
+
+                    @if ($modulo['href'])
+                        <x-button href="{{ $modulo['href'] }}" variant="ghost" class="mt-4 self-start">Abrir</x-button>
+                    @endif
                 </x-card>
             @endforeach
         </div>

@@ -7,7 +7,7 @@ O sistema substitui a planilha *Interpretação de Análise de Solo em Gráficos
 | Módulo | Situação |
 | --- | --- |
 | Base, identidade visual, login e painel | Pronto |
-| Clientes (ID, cliente/proprietário, cidade/estado, data, observação) | Próxima etapa |
+| Clientes (ID, cliente/proprietário, cidade/estado, data, observação) | Pronto |
 | Análises de solo (talhões, profundidade, cálculos de SB, CTC, V%, m%) | Planejado |
 | Gráficos de interpretação por amostra | Planejado |
 | Banco de dados de teores adequados por cultura | Planejado |

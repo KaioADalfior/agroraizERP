@@ -128,6 +128,10 @@ return [
         'email' => 'e-mail',
         'password' => 'senha',
         'password_confirmation' => 'confirmação da senha',
+        'nome' => 'cliente/proprietário',
+        'cidade_estado' => 'cidade/estado',
+        'data' => 'data',
+        'observacao' => 'observação',
     ],
 
 ];

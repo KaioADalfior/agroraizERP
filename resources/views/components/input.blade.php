@@ -3,7 +3,7 @@
     Uso: <x-input name="email" label="E-mail" type="email" icon="envelope" />
     Mostra sozinho o valor antigo (old) e a mensagem de erro do campo.
 --}}
-@props(['name', 'label' => null, 'type' => 'text', 'icon' => null, 'hint' => null])
+@props(['name', 'label' => null, 'type' => 'text', 'icon' => null, 'hint' => null, 'value' => null])
 
 @php
     $id = $attributes->get('id', $name);
@@ -35,7 +35,7 @@
             id="{{ $id }}"
             name="{{ $name }}"
             type="{{ $type }}"
-            @if ($ehSenha) x-bind:type="mostrar ? 'text' : 'password'" @else value="{{ old($name) }}" @endif
+            @if ($ehSenha) x-bind:type="mostrar ? 'text' : 'password'" @else value="{{ old($name, $value) }}" @endif
             @if ($temErro) aria-invalid="true" @endif
             {{ $attributes->except('id')->class($classes) }}
         >

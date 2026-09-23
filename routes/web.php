@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\ClienteController;
 use App\Http\Controllers\PainelController;
 use Illuminate\Support\Facades\Route;
 
@@ -23,5 +24,6 @@ Route::middleware('guest')->group(function () {
 */
 Route::middleware('auth')->group(function () {
     Route::get('/painel', PainelController::class)->name('painel');
+    Route::resource('clientes', ClienteController::class)->except('show');
     Route::post('/logout', [LoginController::class, 'destroy'])->name('logout');
 });
