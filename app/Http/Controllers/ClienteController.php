@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Cliente;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 use Illuminate\View\View;
 
 class ClienteController extends Controller
@@ -17,7 +18,9 @@ class ClienteController extends Controller
             ->when($busca !== '', function ($query) use ($busca) {
                 $query->where(function ($query) use ($busca) {
                     $query->where('nome', 'like', "%{$busca}%")
-                        ->orWhere('cidade_estado', 'like', "%{$busca}%");
+                        ->orWhere('cidade', 'like', "%{$busca}%")
+                        ->orWhere('bairro', 'like', "%{$busca}%")
+                        ->orWhere('cep', 'like', "%{$busca}%");
                 });
             })
             ->orderBy('nome')
@@ -34,6 +37,7 @@ class ClienteController extends Controller
     {
         return view('clientes.create', [
             'cliente' => new Cliente(),
+            'estados' => Cliente::ESTADOS,
         ]);
     }
 
@@ -48,6 +52,7 @@ class ClienteController extends Controller
     {
         return view('clientes.edit', [
             'cliente' => $cliente,
+            'estados' => Cliente::ESTADOS,
         ]);
     }
 
@@ -70,11 +75,24 @@ class ClienteController extends Controller
      */
     private function validado(Request $request): array
     {
-        return $request->validate([
+        $dados = $request->validate([
             'nome' => ['required', 'string', 'max:255'],
-            'cidade_estado' => ['nullable', 'string', 'max:255'],
+            'cep' => ['required', 'string', 'regex:/^\d{5}-?\d{3}$/'],
+            'endereco' => ['required', 'string', 'max:255'],
+            'numero' => ['nullable', 'string', 'max:20'],
+            'complemento' => ['nullable', 'string', 'max:255'],
+            'bairro' => ['required', 'string', 'max:255'],
+            'cidade' => ['required', 'string', 'max:255'],
+            'estado' => ['required', 'string', Rule::in(array_keys(Cliente::ESTADOS))],
             'data' => ['nullable', 'date'],
             'observacao' => ['nullable', 'string', 'max:2000'],
         ]);
+
+        // Normaliza o CEP sempre para o formato 00000-000, aceitando os dois
+        // formatos (com ou sem traço) vindos do formulário.
+        $cepLimpo = preg_replace('/\D/', '', $dados['cep']);
+        $dados['cep'] = substr($cepLimpo, 0, 5).'-'.substr($cepLimpo, 5);
+
+        return $dados;
     }
 }

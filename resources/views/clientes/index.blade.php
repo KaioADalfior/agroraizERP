@@ -11,7 +11,7 @@
     @endif
 
     <form method="GET" action="{{ route('clientes.index') }}" class="mb-6 max-w-md">
-        <x-input name="busca" type="search" icon="search" placeholder="Buscar por nome ou cidade/estado" :value="$busca" />
+        <x-input name="busca" type="search" icon="search" placeholder="Buscar por nome, cidade ou bairro" :value="$busca" />
     </form>
 
     <x-card class="overflow-hidden" x-data="{ excluindoId: null }">
@@ -34,7 +34,7 @@
                     <thead class="border-b border-raiz-200 bg-raiz-50 text-xs font-semibold uppercase tracking-wide text-raiz-600">
                         <tr>
                             <th class="px-6 py-3">Cliente/Proprietário</th>
-                            <th class="px-6 py-3">Cidade/Estado</th>
+                            <th class="px-6 py-3">Cidade/UF</th>
                             <th class="px-6 py-3">Data</th>
                             <th class="px-6 py-3">Observação</th>
                             <th class="px-6 py-3 text-right">Ações</th>
@@ -44,7 +44,13 @@
                         @foreach ($clientes as $cliente)
                             <tr class="hover:bg-raiz-50/60">
                                 <td class="px-6 py-4 font-medium text-raiz-900">{{ $cliente->nome }}</td>
-                                <td class="px-6 py-4 text-raiz-700">{{ $cliente->cidade_estado ?: '—' }}</td>
+                                <td class="px-6 py-4 text-raiz-700">
+                                    @if ($cliente->cidade || $cliente->estado)
+                                        {{ $cliente->cidade }}{{ $cliente->cidade && $cliente->estado ? '/' : '' }}{{ $cliente->estado }}
+                                    @else
+                                        —
+                                    @endif
+                                </td>
                                 <td class="px-6 py-4 text-raiz-700">{{ optional($cliente->data)->format('d/m/Y') ?? '—' }}</td>
                                 <td class="max-w-xs truncate px-6 py-4 text-raiz-700">{{ $cliente->observacao ?: '—' }}</td>
                                 <td class="px-6 py-4">
