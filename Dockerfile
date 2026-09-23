@@ -42,6 +42,7 @@ RUN composer dump-autoload --optimize --no-dev
 FROM serversideup/php:8.4-fpm-nginx AS app
 
 ENV PHP_OPCACHE_ENABLE="1" \
+    HEALTHCHECK_PATH="/up" \
     AUTORUN_ENABLED="true" \
     AUTORUN_LARAVEL_MIGRATION="true" \
     AUTORUN_LARAVEL_MIGRATION_FORCE="true" \
