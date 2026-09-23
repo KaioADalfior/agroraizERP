@@ -113,7 +113,7 @@
             </main>
 
             <footer class="mx-auto w-full max-w-7xl px-4 pb-8 text-xs text-raiz-500 sm:px-6 lg:px-8">
-                © {{ date('Y') }} Agro Raiz — Consultorias e Projetos
+                © {{ date('Y') }} DAK Soluções Digitais - TODOS OS DIREITOS RESERVADOS
             </footer>
         </div>
     </body>
