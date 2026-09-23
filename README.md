@@ -7,10 +7,11 @@ O sistema substitui a planilha *Interpretação de Análise de Solo em Gráficos
 | Módulo | Situação |
 | --- | --- |
 | Base, identidade visual, login e painel | Pronto |
-| Clientes (ID, cliente/proprietário, endereço completo via CEP, data, observação) | Pronto |
-| Análises de solo (talhões, profundidade, cálculos de SB, CTC, V%, m%) | Planejado |
+| Clientes (endereço completo via CEP, abas de Propriedades e Análises de Solo) | Pronto |
+| Propriedades (cadastro e listagem por cliente) | Pronto |
+| Banco de dados de teores adequados por cultura (48 culturas, fonte: Prezotti et al., 2007) | Pronto |
+| Análises de solo (cadastro completo com talhões, profundidade e cálculos de SB, CTC, V%, m%) | Em andamento — hoje só listagem, sem cadastro |
 | Gráficos de interpretação por amostra | Planejado |
-| Banco de dados de teores adequados por cultura | Planejado |
 
 ## Requisitos
 

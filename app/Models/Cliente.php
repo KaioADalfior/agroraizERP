@@ -6,6 +6,7 @@ use Database\Factories\ClienteFactory;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 #[Fillable(['nome', 'cep', 'endereco', 'numero', 'complemento', 'bairro', 'cidade', 'estado', 'data', 'observacao'])]
@@ -54,5 +55,10 @@ class Cliente extends Model
         return [
             'data' => 'date',
         ];
+    }
+
+    public function propriedades(): HasMany
+    {
+        return $this->hasMany(Propriedade::class);
     }
 }

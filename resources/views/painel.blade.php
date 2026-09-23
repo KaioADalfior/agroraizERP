@@ -3,10 +3,10 @@
 
     // Módulos previstos (espelham as abas da planilha "Interpretação de Análise de Solo").
     $modulos = [
-        ['icone' => 'users', 'titulo' => 'Clientes', 'texto' => 'Cadastro de clientes e proprietários, com cidade/estado, data e observações.', 'href' => route('clientes.index')],
+        ['icone' => 'users', 'titulo' => 'Clientes', 'texto' => 'Cadastro de clientes, endereço completo, propriedades e análises de solo.', 'href' => route('clientes.index')],
         ['icone' => 'beaker', 'titulo' => 'Análises de solo', 'texto' => 'Lançamento dos resultados por talhão e profundidade, com cálculos automáticos.', 'href' => null],
         ['icone' => 'chart-bar', 'titulo' => 'Gráficos', 'texto' => 'Interpretação visual dos nutrientes de cada amostra, pronta para apresentar.', 'href' => null],
-        ['icone' => 'circle-stack', 'titulo' => 'Banco de dados', 'texto' => 'Teores adequados por cultura, usados como referência na interpretação.', 'href' => null],
+        ['icone' => 'circle-stack', 'titulo' => 'Banco de dados', 'texto' => 'Teores adequados por cultura, usados como referência na interpretação.', 'href' => route('culturas.index')],
     ];
 @endphp
 

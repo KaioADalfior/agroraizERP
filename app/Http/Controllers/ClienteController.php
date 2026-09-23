@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\AnaliseSolo;
 use App\Models\Cliente;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -30,6 +31,26 @@ class ClienteController extends Controller
         return view('clientes.index', [
             'clientes' => $clientes,
             'busca' => $busca,
+        ]);
+    }
+
+    public function show(Cliente $cliente): View
+    {
+        $cliente->load(['propriedades' => function ($query) {
+            $query->orderBy('nome');
+        }]);
+
+        $analises = AnaliseSolo::query()
+            ->whereHas('propriedade', function ($query) use ($cliente) {
+                $query->where('cliente_id', $cliente->id);
+            })
+            ->with(['propriedade', 'cultura'])
+            ->orderByDesc('data_coleta')
+            ->get();
+
+        return view('clientes.show', [
+            'cliente' => $cliente,
+            'analises' => $analises,
         ]);
     }
 

@@ -55,6 +55,7 @@
                                 <td class="max-w-xs truncate px-6 py-4 text-raiz-700">{{ $cliente->observacao ?: '—' }}</td>
                                 <td class="px-6 py-4">
                                     <div class="flex items-center justify-end gap-2">
+                                        <x-button href="{{ route('clientes.show', $cliente) }}" variant="ghost">Ver</x-button>
                                         <x-button href="{{ route('clientes.edit', $cliente) }}" variant="ghost">Editar</x-button>
                                         <button
                                             type="button"

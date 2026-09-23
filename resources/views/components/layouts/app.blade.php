@@ -62,7 +62,7 @@
                     <x-nav-link :href="route('clientes.index')" icon="users" :active="request()->routeIs('clientes.*')">Clientes</x-nav-link>
                     <x-nav-link icon="beaker" :soon="true">Análises de solo</x-nav-link>
                     <x-nav-link icon="chart-bar" :soon="true">Gráficos</x-nav-link>
-                    <x-nav-link icon="circle-stack" :soon="true">Banco de dados</x-nav-link>
+                    <x-nav-link :href="route('culturas.index')" icon="circle-stack" :active="request()->routeIs('culturas.*')">Banco de dados</x-nav-link>
                 </div>
             </nav>
 
