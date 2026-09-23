@@ -12,6 +12,12 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware): void {
+        // Confia no proxy reverso (EasyPanel/Traefik) para saber que a
+        // conexão original do visitante é HTTPS, mesmo o proxy falando
+        // com o contêiner em HTTP por dentro. Sem isso, os links de CSS/JS
+        // e o IP do visitante (usado no bloqueio de login) saem errados.
+        $middleware->trustProxies(at: '*');
+
         // Visitantes vão para o login; quem já está logado vai para o painel.
         $middleware->redirectGuestsTo(fn () => route('login'));
         $middleware->redirectUsersTo(fn () => route('painel'));
