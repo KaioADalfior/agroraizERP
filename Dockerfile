@@ -39,7 +39,7 @@ RUN composer dump-autoload --optimize --no-dev
 # Etapa 3: imagem final — PHP-FPM + Nginx + Supervisor num único container
 # (imagem mantida pela serversideup, feita para rodar Laravel em produção)
 # ---------------------------------------------------------------------------
-FROM serversideup/php:8.3-fpm-nginx AS app
+FROM serversideup/php:8.4-fpm-nginx AS app
 
 ENV PHP_OPCACHE_ENABLE="1" \
     AUTORUN_ENABLED="true" \

@@ -14,7 +14,7 @@ O sistema substitui a planilha *Interpretação de Análise de Solo em Gráficos
 
 ## Requisitos
 
-- PHP 8.3 ou superior e Composer
+- PHP 8.4 ou superior e Composer
 - Node.js 20.19 ou superior (ou 22+), com npm
 - MySQL ou MariaDB rodando (Laragon, XAMPP, Herd + DBngin, Docker etc.)
 

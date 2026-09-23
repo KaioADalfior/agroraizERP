@@ -79,7 +79,7 @@ Troque `DB_PASSWORD` pela senha real do serviço de banco (veja em **Senha**, n�
 
 ## 3. O que acontece automaticamente no deploy
 
-O `Dockerfile` builda os assets do Tailwind (`npm run build`), instala as dependências do PHP com Composer, e a imagem final (baseada em `serversideup/php:8.3-fpm-nginx`) roda, a cada início de contêiner:
+O `Dockerfile` builda os assets do Tailwind (`npm run build`), instala as dependências do PHP com Composer, e a imagem final (baseada em `serversideup/php:8.4-fpm-nginx`) roda, a cada início de contêiner:
 
 - `php artisan migrate --force` (cria/atualiza as tabelas do banco)
 - `php artisan storage:link`
