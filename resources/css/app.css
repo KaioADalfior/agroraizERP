@@ -1,0 +1,56 @@
+@import 'tailwindcss';
+
+@source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
+@source '../../storage/framework/views/*.php';
+
+/*
+|--------------------------------------------------------------------------
+| Identidade visual Agro Raiz
+|--------------------------------------------------------------------------
+| A cor base da marca é o verde oliva da logo (#4B5942), que aqui é o tom
+| "raiz-700". Os demais tons são a mesma cor misturada com branco (mais
+| claros) ou com preto (mais escuros), para tudo combinar com a logo.
+|
+| Use assim: bg-raiz-700, text-raiz-800, border-raiz-200, ring-raiz-600...
+*/
+@theme {
+    --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
+        'Segoe UI Symbol', 'Noto Color Emoji';
+
+    /* Fonte larga, parecida com a da logo. Use em títulos: font-display */
+    --font-display: 'Michroma', 'Instrument Sans', ui-sans-serif, system-ui, sans-serif;
+
+    --color-raiz-50: #f7f8f6;
+    --color-raiz-100: #edeeec;
+    --color-raiz-200: #dbded9;
+    --color-raiz-300: #c2c7bf;
+    --color-raiz-400: #9ea599;
+    --color-raiz-500: #76816f;
+    --color-raiz-600: #5d6a55;
+    --color-raiz-700: #4b5942; /* cor da logo */
+    --color-raiz-800: #3c4735;
+    --color-raiz-900: #2d3528;
+    --color-raiz-950: #1e241a;
+}
+
+@layer base {
+    html {
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+    }
+
+    body {
+        background-color: var(--color-raiz-50);
+        color: var(--color-raiz-900);
+    }
+
+    ::selection {
+        background-color: var(--color-raiz-200);
+        color: var(--color-raiz-950);
+    }
+
+    /* Esconde elementos do Alpine.js até ele carregar */
+    [x-cloak] {
+        display: none !important;
+    }
+}
