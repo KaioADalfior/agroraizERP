@@ -1,4 +1,7 @@
-<x-layouts.app :title="'Editar '.$cliente->nome">
+@php
+    $layoutCliente = request()->header('Sec-Fetch-Dest') === 'iframe' ? 'layouts.embed' : 'layouts.app';
+@endphp
+<x-dynamic-component :component="$layoutCliente" :title="'Editar '.$cliente->nome">
     <x-page-header :title="$cliente->nome" subtitle="Editar dados do cliente">
         <x-button href="{{ route('clientes.index') }}" variant="secondary">Voltar</x-button>
     </x-page-header>
@@ -14,4 +17,4 @@
             </div>
         </form>
     </x-card>
-</x-layouts.app>
+</x-dynamic-component>

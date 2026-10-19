@@ -1,4 +1,10 @@
-<x-layouts.app title="Clientes">
+@php
+    // Carregada dentro do iframe do modal de Clientes (ver layouts.app)? Usa o
+    // layout leve, sem menu lateral duplicado. Acesso direto à URL continua
+    // mostrando a moldura completa do painel.
+    $layoutCliente = request()->header('Sec-Fetch-Dest') === 'iframe' ? 'layouts.embed' : 'layouts.app';
+@endphp
+<x-dynamic-component :component="$layoutCliente" title="Clientes">
     <x-page-header title="Clientes" subtitle="Cadastro de clientes e proprietários">
         <x-button href="{{ route('clientes.create') }}">Novo cliente</x-button>
     </x-page-header>
@@ -100,4 +106,4 @@
             </div>
         @endif
     </x-card>
-</x-layouts.app>
+</x-dynamic-component>

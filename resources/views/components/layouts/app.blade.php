@@ -21,7 +21,7 @@
     </head>
     <body
         class="min-h-full bg-raiz-50 font-sans text-raiz-900 antialiased"
-        x-data="{ menuAberto: false }"
+        x-data="{ menuAberto: false, modalClientesAberto: false, modalClientesTelaCheia: false, modalClientesCarregando: false }"
         x-on:keydown.escape.window="menuAberto = false"
     >
         {{-- Fundo escuro atrás do menu no celular --}}
@@ -59,7 +59,14 @@
 
                 <div class="space-y-1">
                     <x-nav-link :href="route('painel')" icon="home" :active="request()->routeIs('painel')">Painel</x-nav-link>
-                    <x-nav-link :href="route('clientes.index')" icon="users" :active="request()->routeIs('clientes.*')">Clientes</x-nav-link>
+                    <x-nav-link
+                        :as="'button'"
+                        icon="users"
+                        x-bind:class="modalClientesAberto ? 'bg-white text-raiz-800 shadow-sm' : 'text-white/80 hover:bg-white/10 hover:text-white'"
+                        x-on:click="modalClientesAberto = true; modalClientesTelaCheia = false; modalClientesCarregando = true; menuAberto = false"
+                    >
+                        Clientes
+                    </x-nav-link>
                     <x-nav-link icon="beaker" :soon="true">Análises de solo</x-nav-link>
                     <x-nav-link icon="chart-bar" :soon="true">Gráficos</x-nav-link>
                     <x-nav-link :href="route('culturas.index')" icon="circle-stack" :active="request()->routeIs('culturas.*')">Banco de dados</x-nav-link>
@@ -115,6 +122,68 @@
             <footer class="mx-auto w-full max-w-7xl px-4 pb-8 text-xs text-raiz-500 sm:px-6 lg:px-8">
                 © {{ date('Y') }} DAK Soluções Digitais - TODOS OS DIREITOS RESERVADOS
             </footer>
+        </div>
+
+        {{--
+            Modal de Clientes: abre por cima de qualquer página do painel ao
+            clicar em "Clientes" no menu, carregando a listagem (e, a partir
+            dela, a ficha de cada cliente) num iframe — reaproveitando as
+            mesmas páginas/rotas/controllers, sem duplicar nada. Fecha
+            exclusivamente pelo botão X (de propósito: não fecha com ESC nem
+            clicando fora, para não perder preenchimento em andamento).
+        --}}
+        <div
+            x-show="modalClientesAberto"
+            x-cloak
+            class="fixed inset-0 z-[100] flex items-center justify-center p-0 sm:p-6"
+            x-effect="document.documentElement.style.overflow = modalClientesAberto ? 'hidden' : ''"
+        >
+            <div class="absolute inset-0 bg-raiz-950/70"></div>
+
+            <div
+                class="relative flex w-full flex-col overflow-hidden bg-white shadow-2xl transition-[width,height] duration-150"
+                x-bind:class="modalClientesTelaCheia ? 'h-full w-full rounded-none' : 'h-full rounded-none sm:h-[80vh] sm:w-[80vw] sm:rounded-2xl'"
+            >
+                <div class="flex items-center justify-between border-b border-raiz-200 bg-raiz-50 px-5 py-3">
+                    <h2 class="font-display text-sm tracking-wide text-raiz-800">CLIENTES</h2>
+                    <div class="flex items-center gap-1">
+                        <button
+                            type="button"
+                            x-on:click="modalClientesTelaCheia = ! modalClientesTelaCheia"
+                            class="rounded-lg p-2 text-raiz-600 transition hover:bg-raiz-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-raiz-500"
+                            x-bind:aria-label="modalClientesTelaCheia ? 'Restaurar tamanho' : 'Tela cheia'"
+                        >
+                            <x-icon name="expand" class="size-5" x-show="! modalClientesTelaCheia" />
+                            <x-icon name="collapse" class="size-5" x-show="modalClientesTelaCheia" x-cloak />
+                        </button>
+                        <button
+                            type="button"
+                            x-on:click="modalClientesAberto = false"
+                            class="rounded-lg p-2 text-raiz-600 transition hover:bg-raiz-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-raiz-500"
+                            aria-label="Fechar"
+                        >
+                            <x-icon name="close" class="size-5" />
+                        </button>
+                    </div>
+                </div>
+
+                <div class="relative flex-1">
+                    <div
+                        x-show="modalClientesCarregando"
+                        x-cloak
+                        class="absolute inset-0 z-10 flex items-center justify-center bg-white"
+                    >
+                        <div class="size-8 animate-spin rounded-full border-2 border-raiz-200 border-t-raiz-700"></div>
+                    </div>
+
+                    <iframe
+                        x-bind:src="modalClientesAberto ? '{{ route('clientes.index') }}' : 'about:blank'"
+                        x-on:load="modalClientesCarregando = false"
+                        class="size-full border-0"
+                        title="Clientes"
+                    ></iframe>
+                </div>
+            </div>
         </div>
     </body>
 </html>
