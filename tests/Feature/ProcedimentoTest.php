@@ -37,6 +37,42 @@ class ProcedimentoTest extends TestCase
             ->assertSee('Custeio visível na ficha');
     }
 
+    public function test_pagina_nao_vaza_o_javascript_do_x_data_como_texto_visivel(): void
+    {
+        // Regressão: uma aspa dupla literal dentro de um comentário no meio do
+        // x-data="{ ... }" (atributo HTML delimitado por aspas duplas) fecha o
+        // atributo mais cedo do que deveria, e o navegador passa a tratar o
+        // resto do JavaScript como texto comum da página — a aba inteira
+        // aparece quebrada, mostrando código em vez da interface. Isso
+        // realmente aconteceu nesta tela; este teste garante que não volta a
+        // acontecer sem que a suíte quebre.
+        $cliente = Cliente::factory()->create();
+        $cliente->procedimentos()->create([
+            'nome' => 'Procedimento qualquer',
+            'tipo_operacao' => 'Custeio',
+        ]);
+
+        $html = $this->actingAs(User::factory()->create())
+            ->get("/clientes/{$cliente->id}/edit")
+            ->assertOk()
+            ->getContent();
+
+        $dom = new \DOMDocument();
+        libxml_use_internal_errors(true);
+        $dom->loadHTML('<?xml encoding="utf-8" ?>'.$html);
+        libxml_clear_errors();
+
+        $xpath = new \DOMXPath($dom);
+        $textoVisivel = '';
+        foreach ($xpath->query('//body//text()[not(ancestor::script)]') as $node) {
+            $textoVisivel .= $node->nodeValue;
+        }
+
+        $this->assertStringNotContainsString('bancosCarregando = false', $textoVisivel);
+        $this->assertStringNotContainsString('catch (erro)', $textoVisivel);
+        $this->assertStringNotContainsString('this.procedimentos.push', $textoVisivel);
+    }
+
     public function test_visitante_nao_acessa_procedimentos(): void
     {
         $cliente = Cliente::factory()->create();

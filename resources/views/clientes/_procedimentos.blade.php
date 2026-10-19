@@ -70,7 +70,7 @@
                 });
                 const dados = await resposta.json();
                 this.bancos = Array.isArray(dados.bancos) ? dados.bancos : [];
-                // "erro" só desativa a busca quando não há NENHUMA lista para usar.
+                // 'erro' só desativa a busca quando não há NENHUMA lista para usar.
                 // Se a BrasilAPI falhou agora mas existe uma lista de reserva (já
                 // obtida com sucesso antes), a busca continua funcionando com ela —
                 // só avisamos que pode estar um pouco desatualizada.
