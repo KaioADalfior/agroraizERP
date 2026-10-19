@@ -10,7 +10,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-#[Fillable(['nome', 'area_hectares', 'localizacao', 'observacao'])]
+#[Fillable(['nome', 'cep', 'endereco', 'numero', 'complemento', 'bairro', 'cidade', 'estado', 'area_hectares', 'localizacao', 'observacao'])]
 class Propriedade extends Model
 {
     /** @use HasFactory<PropriedadeFactory> */

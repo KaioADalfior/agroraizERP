@@ -22,7 +22,7 @@
 
 <div>
     @if ($label)
-        <label for="{{ $id }}" class="mb-1.5 block text-sm font-medium text-raiz-800">{{ $label }}</label>
+        <label for="{{ $id }}" class="{{ $compact ? 'mb-1 text-xs' : 'mb-1.5 text-sm' }} block font-medium text-raiz-800">{{ $label }}</label>
     @endif
 
     <div class="relative" x-data="{ mostrar: false }">

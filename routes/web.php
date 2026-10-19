@@ -28,6 +28,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/painel', PainelController::class)->name('painel');
     Route::resource('clientes', ClienteController::class);
     Route::post('/clientes/{cliente}/propriedades', [PropriedadeController::class, 'store'])->name('propriedades.store');
+    Route::put('/propriedades/{propriedade}', [PropriedadeController::class, 'update'])->name('propriedades.update');
     Route::delete('/propriedades/{propriedade}', [PropriedadeController::class, 'destroy'])->name('propriedades.destroy');
     Route::get('/banco-de-dados', [CulturaController::class, 'index'])->name('culturas.index');
     Route::post('/logout', [LoginController::class, 'destroy'])->name('logout');
