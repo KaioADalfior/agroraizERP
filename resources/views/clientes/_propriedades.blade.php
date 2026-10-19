@@ -1,30 +1,33 @@
-<div class="grid gap-6 lg:grid-cols-3">
+@php
+    $dentroDoModal ??= false;
+@endphp
+<div class="grid {{ $dentroDoModal ? 'gap-4' : 'gap-6' }} lg:grid-cols-3">
     {{-- Formulário: nova propriedade --}}
-    <x-card class="p-6 lg:col-span-1">
-        <h2 class="text-base font-semibold text-raiz-900">Nova propriedade</h2>
+    <x-card class="{{ $dentroDoModal ? 'p-4' : 'p-6' }} lg:col-span-1">
+        <h2 class="text-sm font-semibold text-raiz-900">Nova propriedade</h2>
         <p class="mt-1 text-sm text-raiz-600">Cadastre uma fazenda, sítio ou área deste cliente.</p>
 
-        <form method="POST" action="{{ route('propriedades.store', $cliente) }}" class="mt-5 space-y-5">
+        <form method="POST" action="{{ route('propriedades.store', $cliente) }}" class="{{ $dentroDoModal ? 'mt-3 space-y-3' : 'mt-5 space-y-5' }}">
             @csrf
-            <x-input name="nome" label="Nome da propriedade" placeholder="Ex.: Fazenda Boa Vista" required />
-            <x-input name="area_hectares" type="number" step="0.01" min="0" label="Área (ha)" placeholder="Ex.: 45.5" />
-            <x-input name="localizacao" label="Localização" placeholder="Ex.: Zona rural, km 12" />
+            <x-input name="nome" label="Nome da propriedade" placeholder="Ex.: Fazenda Boa Vista" required :compact="$dentroDoModal" />
+            <x-input name="area_hectares" type="number" step="0.01" min="0" label="Área (ha)" placeholder="Ex.: 45.5" :compact="$dentroDoModal" />
+            <x-input name="localizacao" label="Localização" placeholder="Ex.: Zona rural, km 12" :compact="$dentroDoModal" />
             <x-textarea name="observacao" label="Observação" rows="3" placeholder="Anotações sobre a propriedade" />
 
-            <x-button type="submit" class="w-full">Cadastrar propriedade</x-button>
+            <x-button type="submit" class="w-full" :compact="$dentroDoModal">Cadastrar propriedade</x-button>
         </form>
     </x-card>
 
     {{-- Lista de propriedades --}}
     <div class="lg:col-span-2">
         @if ($cliente->propriedades->isEmpty())
-            <x-card class="p-10 text-center">
+            <x-card class="{{ $dentroDoModal ? 'p-6' : 'p-10' }} text-center">
                 <p class="text-sm text-raiz-600">Nenhuma propriedade cadastrada ainda para este cliente.</p>
             </x-card>
         @else
-            <div class="space-y-4" x-data="{ excluindoId: null }">
+            <div class="{{ $dentroDoModal ? 'space-y-3' : 'space-y-4' }}" x-data="{ excluindoId: null }">
                 @foreach ($cliente->propriedades as $propriedade)
-                    <x-card class="p-5">
+                    <x-card class="{{ $dentroDoModal ? 'p-3' : 'p-5' }}">
                         <div class="flex items-start justify-between gap-4">
                             <div class="min-w-0">
                                 <h3 class="truncate text-sm font-semibold text-raiz-900">{{ $propriedade->nome }}</h3>

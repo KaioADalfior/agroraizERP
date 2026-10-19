@@ -3,7 +3,7 @@
     Uso: <x-input name="email" label="E-mail" type="email" icon="envelope" />
     Mostra sozinho o valor antigo (old) e a mensagem de erro do campo.
 --}}
-@props(['name', 'label' => null, 'type' => 'text', 'icon' => null, 'hint' => null, 'value' => null])
+@props(['name', 'label' => null, 'type' => 'text', 'icon' => null, 'hint' => null, 'value' => null, 'compact' => false])
 
 @php
     $id = $attributes->get('id', $name);
@@ -11,7 +11,8 @@
     $ehSenha = $type === 'password';
 
     $classes = [
-        'block w-full rounded-lg border bg-white py-2.5 text-sm text-raiz-900 shadow-xs transition',
+        'block w-full rounded-lg border bg-white text-sm text-raiz-900 shadow-xs transition',
+        $compact ? 'py-1.5' : 'py-2.5',
         'placeholder:text-raiz-400 focus:outline-none focus:ring-2',
         $icon ? 'pl-11' : 'pl-3.5',
         $ehSenha ? 'pr-11' : 'pr-3.5',

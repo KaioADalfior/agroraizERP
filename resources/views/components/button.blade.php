@@ -1,12 +1,14 @@
 {{--
     Botão padrão. Variantes: primary (padrão), secondary, ghost.
     Uso: <x-button type="submit">Salvar</x-button>  ou  <x-button href="/algum-lugar" variant="secondary">Voltar</x-button>
+    Use :compact="true" para a versão mais densa (ex.: barras de ação dentro do modal de Clientes).
 --}}
-@props(['variant' => 'primary', 'type' => 'button', 'href' => null])
+@props(['variant' => 'primary', 'type' => 'button', 'href' => null, 'compact' => false])
 
 @php
     $classes = [
-        'inline-flex items-center justify-center gap-2 rounded-lg px-4 py-2.5 text-sm font-semibold transition',
+        'inline-flex items-center justify-center rounded-lg text-sm font-semibold transition',
+        $compact ? 'gap-1.5 px-2.5 py-1.5' : 'gap-2 px-4 py-2.5',
         'focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-60',
         match ($variant) {
             'secondary' => 'border border-raiz-300 bg-white text-raiz-800 hover:bg-raiz-50 focus-visible:ring-raiz-500',

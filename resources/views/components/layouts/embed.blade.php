@@ -11,8 +11,8 @@
     <head>
         @include('partials.head', ['title' => $title])
     </head>
-    <body class="min-h-full bg-raiz-50 font-sans text-raiz-900 antialiased">
-        <main class="mx-auto w-full max-w-6xl px-4 py-6 sm:px-6 lg:px-8">
+    <body class="min-h-full bg-raiz-50 font-sans text-[13px] text-raiz-900 antialiased">
+        <main class="mx-auto w-full max-w-6xl px-4 py-3 sm:px-5">
             {{ $slot }}
         </main>
     </body>

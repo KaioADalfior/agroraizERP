@@ -1,26 +1,27 @@
 @php
-    $layoutCliente = request()->header('Sec-Fetch-Dest') === 'iframe' ? 'layouts.embed' : 'layouts.app';
+    $dentroDoModal = request()->header('Sec-Fetch-Dest') === 'iframe';
+    $layoutCliente = $dentroDoModal ? 'layouts.embed' : 'layouts.app';
 @endphp
 <x-dynamic-component :component="$layoutCliente" :title="$cliente->nome">
     <div x-data="{ aba: 'cliente', excluindo: false }">
         {{-- Cabeçalho da ficha: nome do cliente + barra de ações --}}
-        <div class="mb-6 flex flex-col gap-4 border-b border-raiz-200 pb-5 sm:flex-row sm:items-center sm:justify-between">
+        <div class="{{ $dentroDoModal ? 'mb-3 pb-3' : 'mb-6 pb-5' }} flex flex-col gap-3 border-b border-raiz-200 sm:flex-row sm:items-center sm:justify-between">
             <div>
                 <p class="text-xs font-semibold uppercase tracking-wide text-raiz-500">Cliente</p>
-                <h1 class="font-display text-xl tracking-wide text-raiz-800">{{ $cliente->nome }}</h1>
+                <h1 class="font-display {{ $dentroDoModal ? 'text-base' : 'text-xl' }} tracking-wide text-raiz-800">{{ $cliente->nome }}</h1>
             </div>
 
-            <div class="flex flex-wrap items-center gap-2">
-                <x-button href="{{ route('clientes.create') }}" variant="secondary">Novo</x-button>
-                <x-button href="{{ route('clientes.edit', $cliente) }}">Editar</x-button>
+            <div class="flex flex-wrap items-center gap-1.5">
+                <x-button href="{{ route('clientes.create') }}" variant="secondary" :compact="$dentroDoModal">Novo</x-button>
+                <x-button href="{{ route('clientes.edit', $cliente) }}" :compact="$dentroDoModal">Editar</x-button>
                 <button
                     type="button"
                     x-on:click="excluindo = true"
-                    class="inline-flex items-center justify-center gap-2 rounded-lg bg-red-600 px-4 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:bg-red-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-red-500 focus-visible:ring-offset-2"
+                    class="inline-flex items-center justify-center gap-1.5 rounded-lg bg-red-600 {{ $dentroDoModal ? 'px-2.5 py-1.5' : 'px-4 py-2.5' }} text-sm font-semibold text-white shadow-sm transition hover:bg-red-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-red-500 focus-visible:ring-offset-2"
                 >
                     Excluir
                 </button>
-                <x-button href="{{ route('clientes.index') }}" variant="ghost">Listar</x-button>
+                <x-button href="{{ route('clientes.index') }}" variant="ghost" :compact="$dentroDoModal">Listar</x-button>
             </div>
         </div>
 
@@ -48,19 +49,19 @@
         </div>
 
         @if (session('sucesso'))
-            <div class="mb-6 flex items-center gap-2 rounded-lg border border-raiz-200 bg-raiz-50 px-4 py-3 text-sm text-raiz-800">
+            <div class="mb-4 flex items-center gap-2 rounded-lg border border-raiz-200 bg-raiz-50 px-4 py-2.5 text-sm text-raiz-800">
                 <x-icon name="check" class="size-5 shrink-0 text-raiz-600" />
                 {{ session('sucesso') }}
             </div>
         @endif
 
         {{-- Abas --}}
-        <div class="mb-6 flex gap-2 border-b border-raiz-200">
+        <div class="{{ $dentroDoModal ? 'mb-3' : 'mb-6' }} flex gap-1 border-b border-raiz-200">
             <button
                 type="button"
                 x-on:click="aba = 'cliente'"
                 x-bind:class="aba === 'cliente' ? 'border-raiz-700 text-raiz-900' : 'border-transparent text-raiz-500 hover:text-raiz-800'"
-                class="border-b-2 px-4 py-2.5 text-sm font-semibold transition"
+                class="border-b-2 {{ $dentroDoModal ? 'px-3 py-1.5' : 'px-4 py-2.5' }} text-sm font-semibold transition"
             >
                 Cliente
             </button>
@@ -68,7 +69,7 @@
                 type="button"
                 x-on:click="aba = 'propriedades'"
                 x-bind:class="aba === 'propriedades' ? 'border-raiz-700 text-raiz-900' : 'border-transparent text-raiz-500 hover:text-raiz-800'"
-                class="border-b-2 px-4 py-2.5 text-sm font-semibold transition"
+                class="border-b-2 {{ $dentroDoModal ? 'px-3 py-1.5' : 'px-4 py-2.5' }} text-sm font-semibold transition"
             >
                 Propriedades
             </button>
@@ -76,7 +77,7 @@
                 type="button"
                 x-on:click="aba = 'analises'"
                 x-bind:class="aba === 'analises' ? 'border-raiz-700 text-raiz-900' : 'border-transparent text-raiz-500 hover:text-raiz-800'"
-                class="border-b-2 px-4 py-2.5 text-sm font-semibold transition"
+                class="border-b-2 {{ $dentroDoModal ? 'px-3 py-1.5' : 'px-4 py-2.5' }} text-sm font-semibold transition"
             >
                 Análises de Solo
             </button>
@@ -84,7 +85,7 @@
 
         {{-- Aba: Cliente --}}
         <div x-show="aba === 'cliente'">
-            <x-card class="grid gap-4 p-6 sm:grid-cols-2 lg:grid-cols-4">
+            <x-card class="grid {{ $dentroDoModal ? 'gap-3 p-4' : 'gap-4 p-6' }} sm:grid-cols-2 lg:grid-cols-4">
                 <div>
                     <p class="text-xs font-semibold uppercase tracking-wide text-raiz-500">Endereço</p>
                     <p class="mt-1 text-sm text-raiz-800">
@@ -113,12 +114,12 @@
 
         {{-- Aba: Propriedades --}}
         <div x-show="aba === 'propriedades'" x-cloak>
-            @include('clientes._propriedades')
+            @include('clientes._propriedades', ['dentroDoModal' => $dentroDoModal])
         </div>
 
         {{-- Aba: Análises de Solo --}}
         <div x-show="aba === 'analises'" x-cloak>
-            @include('clientes._analises')
+            @include('clientes._analises', ['dentroDoModal' => $dentroDoModal])
         </div>
     </div>
 </x-dynamic-component>
