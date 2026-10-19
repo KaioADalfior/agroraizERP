@@ -142,7 +142,7 @@
 
             <div
                 class="relative flex w-full flex-col overflow-hidden bg-white shadow-2xl transition-[width,height] duration-150"
-                x-bind:class="modalClientesTelaCheia ? 'h-full w-full rounded-none' : 'h-full rounded-none sm:h-[80vh] sm:w-[80vw] sm:rounded-2xl'"
+                x-bind:class="modalClientesTelaCheia ? 'h-full w-full rounded-none' : 'h-full rounded-none sm:h-[85vh] sm:w-[85vw] sm:rounded-2xl'"
             >
                 <div class="flex items-center justify-between border-b border-raiz-200 bg-raiz-50 px-5 py-3">
                     <h2 class="font-display text-sm tracking-wide text-raiz-800">CLIENTES</h2>

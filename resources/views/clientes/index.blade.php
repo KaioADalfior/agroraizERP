@@ -48,7 +48,11 @@
                     </thead>
                     <tbody class="divide-y divide-raiz-100">
                         @foreach ($clientes as $cliente)
-                            <tr class="hover:bg-raiz-50/60">
+                            <tr
+                                class="cursor-pointer select-none hover:bg-raiz-50/60"
+                                title="Dois cliques para abrir"
+                                x-on:dblclick="if (! $event.target.closest('a, button')) { window.location = '{{ route('clientes.show', $cliente) }}' }"
+                            >
                                 <td class="px-6 py-4 font-medium text-raiz-900">{{ $cliente->nome }}</td>
                                 <td class="px-6 py-4 text-raiz-700">
                                     @if ($cliente->cidade || $cliente->estado)
