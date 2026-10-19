@@ -1,15 +1,12 @@
 @php
     // Carregada dentro do iframe do modal de Clientes (ver layouts.app)? Usa o
     // layout leve (sem menu lateral duplicado) e uma densidade visual mais
-    // compacta, para reproduzir as proporções da referência. Todos os
-    // botões e ações continuam presentes nos dois contextos — só o espaçamento muda.
+    // compacta, para reproduzir as proporções da referência.
     $dentroDoModal = request()->header('Sec-Fetch-Dest') === 'iframe';
     $layoutCliente = $dentroDoModal ? 'layouts.embed' : 'layouts.app';
 @endphp
 <x-dynamic-component :component="$layoutCliente" title="Clientes">
-    <x-page-header title="Clientes" subtitle="Cadastro de clientes e proprietários" :compact="$dentroDoModal">
-        <x-button href="{{ route('clientes.create') }}" :compact="$dentroDoModal">Novo cliente</x-button>
-    </x-page-header>
+    <x-page-header title="Clientes" subtitle="Clique em um cliente para abrir a ficha" :compact="$dentroDoModal" />
 
     @if (session('sucesso'))
         <div class="mb-4 flex items-center gap-2 rounded-lg border border-raiz-200 bg-raiz-50 px-4 py-2.5 text-sm text-raiz-800">
@@ -22,19 +19,16 @@
         <x-input name="busca" type="search" icon="search" placeholder="Buscar por nome, cidade ou bairro" :value="$busca" :compact="$dentroDoModal" />
     </form>
 
-    <x-card class="overflow-hidden" x-data="{ excluindoId: null }">
+    <x-card class="overflow-hidden">
         @if ($clientes->isEmpty())
             <div class="{{ $dentroDoModal ? 'p-6' : 'p-10' }} text-center">
                 <p class="text-sm text-raiz-600">
                     @if ($busca !== '')
                         Nenhum cliente encontrado para "{{ $busca }}".
                     @else
-                        Nenhum cliente cadastrado ainda.
+                        Nenhum cliente cadastrado ainda. Use o botão "Novo" dentro da ficha para cadastrar o primeiro.
                     @endif
                 </p>
-                @if ($busca === '')
-                    <x-button href="{{ route('clientes.create') }}" class="mt-4" :compact="$dentroDoModal">Cadastrar o primeiro cliente</x-button>
-                @endif
             </div>
         @else
             <div class="overflow-x-auto">
@@ -45,15 +39,14 @@
                             <th class="{{ $dentroDoModal ? 'px-4 py-2' : 'px-6 py-3' }}">Cidade/UF</th>
                             <th class="{{ $dentroDoModal ? 'px-4 py-2' : 'px-6 py-3' }}">Data</th>
                             <th class="{{ $dentroDoModal ? 'px-4 py-2' : 'px-6 py-3' }}">Observação</th>
-                            <th class="{{ $dentroDoModal ? 'px-4 py-2' : 'px-6 py-3' }} text-right">Ações</th>
                         </tr>
                     </thead>
                     <tbody class="divide-y divide-raiz-100">
                         @foreach ($clientes as $cliente)
                             <tr
                                 class="cursor-pointer select-none hover:bg-raiz-50/60"
-                                title="Dois cliques para abrir"
-                                x-on:dblclick="if (! $event.target.closest('a, button')) { window.location = '{{ route('clientes.show', $cliente) }}' }"
+                                title="Clique para abrir"
+                                x-on:click="window.location = '{{ route('clientes.edit', $cliente) }}'"
                             >
                                 <td class="{{ $dentroDoModal ? 'px-4 py-2' : 'px-6 py-4' }} font-medium text-raiz-900">{{ $cliente->nome }}</td>
                                 <td class="{{ $dentroDoModal ? 'px-4 py-2' : 'px-6 py-4' }} text-raiz-700">
@@ -65,43 +58,7 @@
                                 </td>
                                 <td class="{{ $dentroDoModal ? 'px-4 py-2' : 'px-6 py-4' }} text-raiz-700">{{ optional($cliente->data)->format('d/m/Y') ?? '—' }}</td>
                                 <td class="{{ $dentroDoModal ? 'px-4 py-2' : 'px-6 py-4' }} max-w-xs truncate text-raiz-700">{{ $cliente->observacao ?: '—' }}</td>
-                                <td class="{{ $dentroDoModal ? 'px-4 py-2' : 'px-6 py-4' }}">
-                                    <div class="flex items-center justify-end gap-1.5">
-                                        <x-button href="{{ route('clientes.show', $cliente) }}" variant="ghost" :compact="$dentroDoModal">Ver</x-button>
-                                        <x-button href="{{ route('clientes.edit', $cliente) }}" variant="ghost" :compact="$dentroDoModal">Editar</x-button>
-                                        <button
-                                            type="button"
-                                            x-on:click="excluindoId = {{ $cliente->id }}"
-                                            class="rounded-lg {{ $dentroDoModal ? 'px-2.5 py-1.5' : 'px-4 py-2.5' }} text-sm font-semibold text-red-600 transition hover:bg-red-50 focus:outline-none focus-visible:ring-2 focus-visible:ring-red-500"
-                                        >
-                                            Excluir
-                                        </button>
-                                    </div>
-                                </td>
                             </tr>
-
-                            <template x-if="excluindoId === {{ $cliente->id }}">
-                                <div
-                                    x-cloak
-                                    class="fixed inset-0 z-50 flex items-center justify-center bg-raiz-950/60 p-4"
-                                    x-on:keydown.escape.window="excluindoId = null"
-                                >
-                                    <div class="w-full max-w-sm rounded-2xl bg-white p-6 shadow-lg" x-on:click.outside="excluindoId = null">
-                                        <h2 class="text-base font-semibold text-raiz-900">Excluir cliente?</h2>
-                                        <p class="mt-2 text-sm text-raiz-600">
-                                            Tem certeza que deseja excluir <strong>{{ $cliente->nome }}</strong>? Essa ação não pode ser desfeita pela tela.
-                                        </p>
-                                        <div class="mt-6 flex justify-end gap-3">
-                                            <x-button type="button" variant="ghost" x-on:click="excluindoId = null">Cancelar</x-button>
-                                            <form method="POST" action="{{ route('clientes.destroy', $cliente) }}">
-                                                @csrf
-                                                @method('DELETE')
-                                                <x-button type="submit" variant="danger">Excluir</x-button>
-                                            </form>
-                                        </div>
-                                    </div>
-                                </div>
-                            </template>
                         @endforeach
                     </tbody>
                 </table>

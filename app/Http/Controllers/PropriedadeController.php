@@ -20,7 +20,7 @@ class PropriedadeController extends Controller
 
         $cliente->propriedades()->create($dados);
 
-        return redirect()->route('clientes.show', $cliente)->with('sucesso', 'Propriedade cadastrada com sucesso.');
+        return redirect()->route('clientes.edit', ['cliente' => $cliente, 'aba' => 'propriedades'])->with('sucesso', 'Propriedade cadastrada com sucesso.');
     }
 
     public function destroy(Propriedade $propriedade): RedirectResponse
@@ -29,6 +29,6 @@ class PropriedadeController extends Controller
 
         $propriedade->delete();
 
-        return redirect()->route('clientes.show', $cliente)->with('sucesso', 'Propriedade removida.');
+        return redirect()->route('clientes.edit', ['cliente' => $cliente, 'aba' => 'propriedades'])->with('sucesso', 'Propriedade removida.');
     }
 }

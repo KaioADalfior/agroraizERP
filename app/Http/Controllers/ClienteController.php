@@ -64,16 +64,32 @@ class ClienteController extends Controller
 
     public function store(Request $request): RedirectResponse
     {
-        Cliente::create($this->validado($request));
+        $cliente = Cliente::create($this->validado($request));
 
-        return redirect()->route('clientes.index')->with('sucesso', 'Cliente cadastrado com sucesso.');
+        return redirect()->route('clientes.edit', $cliente)->with('sucesso', 'Cliente cadastrado com sucesso.');
     }
 
     public function edit(Cliente $cliente): View
     {
+        // A ficha do cliente (edit.blade.php) já abre com os campos prontos
+        // para edição e inclui as abas de Propriedades e Análises de Solo,
+        // por isso precisa dos mesmos dados que a tela de visualização usava.
+        $cliente->load(['propriedades' => function ($query) {
+            $query->orderBy('nome');
+        }]);
+
+        $analises = AnaliseSolo::query()
+            ->whereHas('propriedade', function ($query) use ($cliente) {
+                $query->where('cliente_id', $cliente->id);
+            })
+            ->with(['propriedade', 'cultura'])
+            ->orderByDesc('data_coleta')
+            ->get();
+
         return view('clientes.edit', [
             'cliente' => $cliente,
             'estados' => Cliente::ESTADOS,
+            'analises' => $analises,
         ]);
     }
 
@@ -81,7 +97,7 @@ class ClienteController extends Controller
     {
         $cliente->update($this->validado($request));
 
-        return redirect()->route('clientes.index')->with('sucesso', 'Cliente atualizado com sucesso.');
+        return redirect()->route('clientes.edit', $cliente)->with('sucesso', 'Cliente atualizado com sucesso.');
     }
 
     public function destroy(Cliente $cliente): RedirectResponse
