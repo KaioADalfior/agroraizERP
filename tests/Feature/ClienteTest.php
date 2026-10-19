@@ -57,7 +57,7 @@ class ClienteTest extends TestCase
 
     public function test_cria_cliente(): void
     {
-        $this->actingAs(User::factory()->create())
+        $response = $this->actingAs(User::factory()->create())
             ->post('/clientes', [
                 'nome' => 'João da Silva',
                 'cep' => '48260-000',
@@ -68,8 +68,10 @@ class ClienteTest extends TestCase
                 'estado' => 'BA',
                 'data' => '2026-01-15',
                 'observacao' => 'Cliente novo',
-            ])
-            ->assertRedirect('/clientes');
+            ]);
+
+        $cliente = Cliente::where('nome', 'João da Silva')->firstOrFail();
+        $response->assertRedirect("/clientes/{$cliente->id}/edit");
 
         $this->assertDatabaseHas('clientes', [
             'nome' => 'João da Silva',
@@ -81,7 +83,7 @@ class ClienteTest extends TestCase
 
     public function test_cep_e_normalizado_ao_salvar(): void
     {
-        $this->actingAs(User::factory()->create())
+        $response = $this->actingAs(User::factory()->create())
             ->post('/clientes', [
                 'nome' => 'Maria Souza',
                 'cep' => '48260000',
@@ -89,8 +91,10 @@ class ClienteTest extends TestCase
                 'bairro' => 'Centro',
                 'cidade' => 'Curaçá',
                 'estado' => 'BA',
-            ])
-            ->assertRedirect('/clientes');
+            ]);
+
+        $cliente = Cliente::where('nome', 'Maria Souza')->firstOrFail();
+        $response->assertRedirect("/clientes/{$cliente->id}/edit");
 
         $this->assertDatabaseHas('clientes', ['nome' => 'Maria Souza', 'cep' => '48260-000']);
     }
@@ -129,7 +133,7 @@ class ClienteTest extends TestCase
                 'cidade' => $cliente->cidade,
                 'estado' => $cliente->estado,
             ])
-            ->assertRedirect('/clientes');
+            ->assertRedirect("/clientes/{$cliente->id}/edit");
 
         $this->assertDatabaseHas('clientes', ['id' => $cliente->id, 'nome' => 'Nome Novo']);
     }

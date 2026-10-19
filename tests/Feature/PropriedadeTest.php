@@ -49,7 +49,7 @@ class PropriedadeTest extends TestCase
                 'area_hectares' => '45.50',
                 'localizacao' => 'Zona rural',
             ])
-            ->assertRedirect("/clientes/{$cliente->id}");
+            ->assertRedirect("/clientes/{$cliente->id}/edit?aba=propriedades");
 
         $this->assertDatabaseHas('propriedades', [
             'cliente_id' => $cliente->id,
@@ -83,7 +83,7 @@ class PropriedadeTest extends TestCase
 
         $this->actingAs(User::factory()->create())
             ->delete("/propriedades/{$propriedade->id}")
-            ->assertRedirect("/clientes/{$cliente->id}");
+            ->assertRedirect("/clientes/{$cliente->id}/edit?aba=propriedades");
 
         $this->assertSoftDeleted('propriedades', ['id' => $propriedade->id]);
     }

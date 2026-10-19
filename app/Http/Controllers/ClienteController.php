@@ -72,11 +72,17 @@ class ClienteController extends Controller
     public function edit(Cliente $cliente): View
     {
         // A ficha do cliente (edit.blade.php) já abre com os campos prontos
-        // para edição e inclui as abas de Propriedades e Análises de Solo,
-        // por isso precisa dos mesmos dados que a tela de visualização usava.
-        $cliente->load(['propriedades' => function ($query) {
-            $query->orderBy('nome');
-        }]);
+        // para edição e inclui as abas de Propriedades, Análises de Solo e
+        // Procedimentos, por isso precisa dos mesmos dados que a tela de
+        // visualização usava, mais a lista de procedimentos do cliente.
+        $cliente->load([
+            'propriedades' => function ($query) {
+                $query->orderBy('nome');
+            },
+            'procedimentos' => function ($query) {
+                $query->orderByDesc('created_at');
+            },
+        ]);
 
         $analises = AnaliseSolo::query()
             ->whereHas('propriedade', function ($query) use ($cliente) {

@@ -4,6 +4,7 @@ use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\ClienteController;
 use App\Http\Controllers\CulturaController;
 use App\Http\Controllers\PainelController;
+use App\Http\Controllers\ProcedimentoController;
 use App\Http\Controllers\PropriedadeController;
 use Illuminate\Support\Facades\Route;
 
@@ -30,6 +31,10 @@ Route::middleware('auth')->group(function () {
     Route::post('/clientes/{cliente}/propriedades', [PropriedadeController::class, 'store'])->name('propriedades.store');
     Route::put('/propriedades/{propriedade}', [PropriedadeController::class, 'update'])->name('propriedades.update');
     Route::delete('/propriedades/{propriedade}', [PropriedadeController::class, 'destroy'])->name('propriedades.destroy');
+    Route::get('/procedimentos/bancos', [ProcedimentoController::class, 'bancos'])->name('procedimentos.bancos');
+    Route::post('/clientes/{cliente}/procedimentos', [ProcedimentoController::class, 'store'])->name('procedimentos.store');
+    Route::put('/procedimentos/{procedimento}', [ProcedimentoController::class, 'update'])->name('procedimentos.update');
+    Route::delete('/procedimentos/{procedimento}', [ProcedimentoController::class, 'destroy'])->name('procedimentos.destroy');
     Route::get('/banco-de-dados', [CulturaController::class, 'index'])->name('culturas.index');
     Route::post('/logout', [LoginController::class, 'destroy'])->name('logout');
 });

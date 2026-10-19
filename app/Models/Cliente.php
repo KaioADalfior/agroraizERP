@@ -61,4 +61,9 @@ class Cliente extends Model
     {
         return $this->hasMany(Propriedade::class);
     }
+
+    public function procedimentos(): HasMany
+    {
+        return $this->hasMany(Procedimento::class);
+    }
 }

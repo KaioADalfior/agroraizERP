@@ -97,6 +97,14 @@
             >
                 Análises de Solo
             </button>
+            <button
+                type="button"
+                x-on:click="aba = 'procedimentos'"
+                x-bind:class="aba === 'procedimentos' ? 'border-raiz-700 text-raiz-900' : 'border-transparent text-raiz-500 hover:text-raiz-800'"
+                class="border-b-2 {{ $dentroDoModal ? 'px-3 py-1.5' : 'px-4 py-2.5' }} text-sm font-semibold transition"
+            >
+                Procedimentos
+            </button>
         </div>
 
         {{-- Aba: Cliente — os campos já abrem prontos para edição --}}
@@ -117,6 +125,11 @@
         {{-- Aba: Análises de Solo --}}
         <div x-show="aba === 'analises'" x-cloak>
             @include('clientes._analises', ['dentroDoModal' => $dentroDoModal])
+        </div>
+
+        {{-- Aba: Procedimentos --}}
+        <div x-show="aba === 'procedimentos'" x-cloak>
+            @include('clientes._procedimentos', ['dentroDoModal' => $dentroDoModal])
         </div>
     </div>
 </x-dynamic-component>
