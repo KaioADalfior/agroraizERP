@@ -46,7 +46,7 @@
                             <tr
                                 class="cursor-pointer select-none hover:bg-raiz-50/60"
                                 title="Clique para abrir"
-                                x-on:click="window.location = '{{ route('clientes.edit', $cliente) }}'"
+                                onclick="window.location.href = '{{ route('clientes.edit', $cliente) }}'"
                             >
                                 <td class="{{ $dentroDoModal ? 'px-4 py-2' : 'px-6 py-4' }} font-medium text-raiz-900">{{ $cliente->nome }}</td>
                                 <td class="{{ $dentroDoModal ? 'px-4 py-2' : 'px-6 py-4' }} text-raiz-700">
