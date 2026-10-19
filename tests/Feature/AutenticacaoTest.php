@@ -74,10 +74,15 @@ class AutenticacaoTest extends TestCase
     {
         $usuario = User::factory()->create(['name' => 'Maria Souza']);
 
+        // A saudação do painel agora é montada em tempo real pelo Alpine.js
+        // (hora de Brasília, atualizada a cada segundo), então o texto "Olá,
+        // Maria" não existe pronto no HTML enviado pelo servidor — por isso
+        // aqui conferimos que o primeiro nome do usuário chega corretamente
+        // embutido no x-data da saudação, e que a página carrega normalmente.
         $this->actingAs($usuario)
             ->get('/painel')
             ->assertOk()
-            ->assertSee('Olá, Maria');
+            ->assertSee("nome: 'Maria'", false);
     }
 
     public function test_usuario_logado_nao_ve_a_tela_de_login(): void
